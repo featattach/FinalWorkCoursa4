@@ -37,6 +37,11 @@ public class SecurityController {
         model.addAttribute("user", user);
         return "register";
     }
+    @GetMapping("/about")
+    public String about() {
+        return "about"; // Возвращает представление about.html
+    }
+
 
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,

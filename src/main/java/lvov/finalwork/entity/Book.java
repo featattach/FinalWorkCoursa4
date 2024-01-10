@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -25,5 +27,8 @@ public class Book {
     private String author;
     @Column(name = "price")
     private int price;
+    // Связь многие-ко-многим с магазинами
+    @ManyToMany(mappedBy = "books")
+    private Set<Shop> shops = new HashSet<>();
 
 }
