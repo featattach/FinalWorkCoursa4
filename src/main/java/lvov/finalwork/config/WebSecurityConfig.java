@@ -13,7 +13,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Bean
-    public static PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,7 +36,7 @@ public class WebSecurityConfig {
                                 .permitAll()
                 ).logout(
                         logout -> logout
-                                .logoutRequestMatcher (new AntPathRequestMatcher("/logout"))
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 .permitAll()
                 );
         return http.build();

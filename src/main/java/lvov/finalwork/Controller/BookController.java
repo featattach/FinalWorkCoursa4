@@ -1,10 +1,7 @@
 package lvov.finalwork.Controller;
 
 import lombok.extern.slf4j.Slf4j;
-
-import lvov.finalwork.config.Auth;
 import lvov.finalwork.entity.Book;
-
 import lvov.finalwork.entity.BookShop;
 import lvov.finalwork.entity.Shop;
 import lvov.finalwork.repository.BookRepository;
@@ -26,6 +23,7 @@ import java.util.Optional;
 @Slf4j
 @Controller
 public class BookController {
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -34,9 +32,6 @@ public class BookController {
 
     @Autowired
     private BookShopRepository bookShopRepository;
-
-    @Autowired
-    private Auth authentication;
 
     @Autowired
     private LoggingService logService;
@@ -52,16 +47,11 @@ public class BookController {
 
     @GetMapping("/addBookForm")
     public ModelAndView addBookForm() {
-        if (authentication.getAuthentication().getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("READ_ONLY"))) {
-            return new ModelAndView("redirect:/list");
-        } else {
-            ModelAndView mav = new ModelAndView("add-book-form");
-            Book book = new Book();
-            mav.addObject("book", book);
-            mav.addObject("shops", shopRepository.findAll());
-            return mav;
-        }
+        ModelAndView mav = new ModelAndView("add-book-form");
+        Book book = new Book();
+        mav.addObject("book", book);
+        mav.addObject("shops", shopRepository.findAll());
+        return mav;
     }
 
     @PostMapping("/saveBook")
@@ -88,20 +78,14 @@ public class BookController {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            if (authentication.getAuthorities().stream()
-                    .anyMatch(r -> r.getAuthority().equals("ADMIN")) ||
-                    (book.getCreated().equals(currentPrincipalName))) {
-                // Очищаем связанные магазины
-                book.getBookShops().clear();
 
-                ModelAndView mav = new ModelAndView("add-book-form");
-                mav.addObject("book", book);
-                mav.addObject("shops", shopRepository.findAll());
-                logService.logAction(currentPrincipalName, "Изменил книгу");
-                return mav;
-            } else {
-                return new ModelAndView("redirect:/list");
-            }
+            book.getBookShops().clear();
+
+            ModelAndView mav = new ModelAndView("add-book-form");
+            mav.addObject("book", book);
+            mav.addObject("shops", shopRepository.findAll());
+            logService.logAction(currentPrincipalName, "Изменил книгу");
+            return mav;
         } else {
             return new ModelAndView("redirect:/list");
         }
@@ -114,14 +98,10 @@ public class BookController {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            if (authentication.getAuthorities().stream()
-                    .anyMatch(r -> r.getAuthority().equals("ADMIN")) ||
-                    (book.getCreated().equals(currentPrincipalName))) {
-
-                book.getBookShops().clear();
-                bookRepository.deleteById(bookId);
-                logService.logAction(currentPrincipalName, "Удалил книгу");
-            }
+            // Очищаем связанные магазины
+            book.getBookShops().clear();
+            bookRepository.deleteById(bookId);
+            logService.logAction(currentPrincipalName, "Удалил книгу");
         }
         return "redirect:/list";
     }

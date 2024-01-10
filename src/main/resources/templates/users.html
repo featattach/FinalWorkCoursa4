@@ -57,20 +57,17 @@
         <tr>
             <th>ID</th>
             <th>Имя</th>
-            <th>Имя пользователя</th>
+            <th>Фамилия</th>
+            <th>Email</th>
             <th>Роли</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td  th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.username}"></td>
-
-                <ul>
-                    <li th:each="role : ${user.roles}" style="color: #d0d0d0;" th:text="${role}"></li>
-                </ul>
-            </td>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
         </tr>
         </tbody>
     </table>

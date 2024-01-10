@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component;
 public class InOutLog {
     @Autowired
     private LoggingService loggingService;
+
     @EventListener
-    public void onInOk(AuthenticationSuccessEvent event){
+    public void onInOk(AuthenticationSuccessEvent event) {
         String username = event.getAuthentication().getName();
         loggingService.logAction(username, "Вход");
     }
+
     @EventListener
-    public void onOutk(LogoutSuccessEvent event){
+    public void onOutk(LogoutSuccessEvent event) {
         String username = event.getAuthentication().getName();
         loggingService.logAction(username, "Выход");
     }

@@ -24,92 +24,48 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
     @Override
-    public void saveUser(UserDto userDto) {
+    public void saveUser(UserDto userDto){
         User user = new User();
-        user.setName(userDto.getName());
-        user.setUsername(userDto.getUsername());
+        user.setName(userDto.getFirstName() + " " +  userDto.getLastName());
+        user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Role role = roleRepository.findByName("ROLE_ADMIN");
+        if(role == null){
+            role = checkRoleExist();
 
-        Role role;
-        if (userRepository.count() == 0) {
-            role = roleRepository.findByName("ADMIN");
-            if (role == null) {
-                role = createAdminRole();
-            }
-        } else if (userRepository.count() == 1) {
-            role = roleRepository.findByName("USER");
-            if (role == null) {
-                role = createUserRole();
-            }
-        } else {
-            role = roleRepository.findByName("READ_ONLY");
-            if (role == null) {
-                role = createReadOnlyRole();
-            }
         }
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
-    }
 
-    @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
     }
-
     @Override
-    public List<UserDto> findAllUsers() {
+    public User findUserByEmail(String email){ return userRepository.findByEmail(email);}
+    @Override
+    public List<UserDto> findAllUsers(){
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map((user) -> mapToUserDto(user))
+                .map((user)-> mapToUserDto(user))
                 .collect(Collectors.toList());
-    }
 
-    private UserDto mapToUserDto(User user) {
+    }
+    private UserDto mapToUserDto (User user){
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setUsername(user.getUsername());
-        userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
+        String[] str = user.getName().split(" ");
+        userDto.setFirstName(str[0]);
+        userDto.setLastName(str[1]);
+        userDto.setEmail(user.getEmail());
         return userDto;
     }
 
-    private Role createAdminRole() {
+    private Role checkRoleExist(){
         Role role = new Role();
-        role.setName("ADMIN");
+        role.setName("ROLE_ADMIN");
         return roleRepository.save(role);
-    }
-
-    private Role createReadOnlyRole() {
-        Role role = new Role();
-        role.setName("READ_ONLY");
-        return roleRepository.save(role);
-    }
-
-    private Role createUserRole() {
-        Role role = new Role();
-        role.setName("USER");
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void addRoleToUser(String username, String roleName) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            Role role = roleRepository.findByName(roleName);
-            if (role != null) {
-                user.getRoles().clear();
-                user.getRoles().add(role);
-                userRepository.save(user);
-            } else {
-            }
-        } else {
-        }
     }
 }
