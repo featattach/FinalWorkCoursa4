@@ -1,16 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Books Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+    <title>Stores Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <!-- Brand -->
-        <a class="navbar-brand" th:href="@{/}">Book Manager</a>
+        <a class="navbar-brand" th:href="@{/list}">Book Manager</a>
 
         <!-- Toggler/collapsible Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedUserContent"
@@ -22,28 +24,39 @@
         <div class="collapse navbar-collapse" id="navbarSupportedUserContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
+                    <a class="nav-link" th:href="@{/list}">Books</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/users}">User List</a>
+                    <a class="nav-link" th:href="@{/shops}">Shops</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                    <a class="nav-link" th:href="@{/users}">Users</a>
                 </li>
-
-                <!-- Здесь можете добавить дополнительные пункты меню если нужно -->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user-logs}">Logs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Exit</a>
+                </li>
+                <!-- Здесь можете добавить дополнительные пункты меню, если нужно -->
             </ul>
         </div>
     </div>
 </nav>
+
+<div class="container">
     <title>О приложении</title>
+    <h1>О приложении</h1>
+    <p>Добро пожаловать в Stores Management System!</p>
+    <p>Это приложение разработано компанией XYZ для управления книгами, магазинами и пользователями.</p>
+    <p>Разработчик: Иван Иванов</p>
+    <!-- Добавьте больше информации о приложении и разработчике здесь -->
+    <a href="/list">Вернуться к списку книг</a>
+</div>
+
 </body>
-<body>
-<h1>О приложении</h1>
-<p>Это приложение разработано компанией XYZ.</p>
-<p>Описание приложения...</p>
-<p>Разработчик: Иван Иванов</p>
-<!-- Добавьте больше информации о приложении и разработчике здесь -->
-<a href="/index">Вернуться на главную страницу</a>
-</body>
+
 </html>

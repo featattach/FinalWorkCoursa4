@@ -21,7 +21,7 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/index").permitAll()
-                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/users").permitAll()
                 .antMatchers("/about").permitAll()
                 .anyRequest().authenticated()
                 .and()

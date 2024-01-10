@@ -1,16 +1,16 @@
-// Указывает путь к пакету
+
 package lvov.finalwork.entity;
 
-// Импорты Lombok аннотаций и JPA аннотаций
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-// Аннотации Lombok для автоматической генерации нужного кода
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,23 +29,17 @@ public class Shop {
     @Column(name = "address")
     private String address;
 
-    // Ассоциация многие-ко-многим с книгами
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(
-            name = "shop_books",
-            joinColumns = @JoinColumn(name = "shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    private Set<Book> books = new HashSet<>();
+ @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+     private List<BookShop> bookShops = new ArrayList<>();
 
     // Методы 'addBook' и 'removeBook' для удобной работы с ассоциациями
-    public void addBook(Book book) {
-        this.books.add(book);
-        book.getShops().add(this);
+    public void addBookShop(BookShop bookShop) {
+        bookShops.add(bookShop);
+        bookShop.setShop(this);
     }
 
-    public void removeBook(Book book) {
-        this.books.remove(book);
-        book.getShops().remove(this);
+    public void removeBookShop(BookShop bookShop) {
+        bookShops.remove(bookShop);
+        bookShop.setShop(null);
     }
 }

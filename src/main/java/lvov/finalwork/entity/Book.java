@@ -6,8 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 @Getter
@@ -27,8 +28,19 @@ public class Book {
     private String author;
     @Column(name = "price")
     private int price;
-    // Связь многие-ко-многим с магазинами
-    @ManyToMany(mappedBy = "books")
-    private Set<Shop> shops = new HashSet<>();
+    @Column(name = "created")
+    private String created;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookShop> bookShops = new ArrayList<>();
+
+    public void addBookShop(BookShop bookShop){
+        bookShops.add(bookShop);
+        bookShop.setBook(this);
+    }
+    public void removeBookShop(BookShop bookShop) {
+        bookShops.remove(bookShop);
+        bookShop.setBook(null);
+    }
 
 }

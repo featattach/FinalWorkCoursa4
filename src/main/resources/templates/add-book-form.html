@@ -1,54 +1,88 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Books Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Books Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" th:href="@{/index}">Books Management System</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/about}">О программе</a>
-        </li>
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" th:href="@{/list}">Book Manager</a>
+
+        <!-- Toggler/collapsible Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedUserContent"
+                aria-controls="navbarSupportedUserContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedUserContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/list}">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shops}">Shops</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user-logs}">Logs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Exit</a>
+                </li>
+                <!-- Здесь можете добавить дополнительные пункты меню если нужно -->
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
+
 <div class="container">
-  <hr/>
-  <h3>Add New Book</h3>
-  <hr/>
-  <form th:action="@{/saveBook}" th:object="${book}" method="POST">
+    <hr/>
+    <h3>Add New Book</h3>
+    <hr/>
+    <form th:action="@{/saveBook}" th:object="${book}" method="POST">
 
-    <input type="text" th:field="*{title}" class="form-control col-4 mb-4" placeholder="Enter Title"/>
+        <div class="mb-4">
+            <label for="title" class="form-label">Title:</label>
+            <input type="text" id="title" th:field="*{title}" class="form-control col-4" placeholder="Enter Title"/>
+        </div>
 
-    <input type="text" th:field="*{author}" class="form-control col-4 mb-4" placeholder="Enter Author"/>
+        <div class="mb-4">
+            <label for="author" class="form-label">Author:</label>
+            <input type="text" id="author" th:field="*{author}" class="form-control col-4" placeholder="Enter Author"/>
+        </div>
 
-    <input type="text" th:field="*{price}" class="form-control col-4 mb-4" placeholder="Enter Price"/>
+        <div class="mb-4">
+            <label for="price" class="form-label">Price:</label>
+            <input type="text" id="price" th:field="*{price}" class="form-control col-4" placeholder="Enter Price"/>
+        </div>
 
-    <button type="submit" class="btn btn-primary col-2">Save</button>
+        <div class="mb-4">
+            <label for="shopIds" class="form-label">Select Shops:</label>
+            <select multiple id="shopIds" name="shopIds" class="form-select col-4">
+                <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}"></option>
+            </select>
+        </div>
 
-    <input type="hidden" th:field="*{id}"/>
+        <button type="submit" class="btn btn-primary col-2">Save</button>
 
-  </form>
-  <hr/>
-  <a th:href="@{/list}">Back to list</a>
+        <input type="hidden" th:field="*{id}"/>
+
+    </form>
+    <hr/>
+    <a th:href="@{/list}">Back to list</a>
 </div>
 </body>
 </html>

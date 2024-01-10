@@ -1,7 +1,6 @@
 package lvov.finalwork.Controller;
 
 
-
 import lombok.extern.slf4j.Slf4j;
 import lvov.finalwork.entity.Shop;
 import lvov.finalwork.repository.ShopRepository;
@@ -19,7 +18,7 @@ public class ShopController {
     private ShopRepository shopRepository;
 
     @GetMapping("/shops")
-    public ModelAndView getAllShops(){
+    public ModelAndView getAllShops() {
         log.info("/shops -> connection");
         ModelAndView mav = new ModelAndView("list-shop");
         mav.addObject("shops", shopRepository.findAll());
@@ -27,7 +26,7 @@ public class ShopController {
     }
 
     @GetMapping("/addShopForm")
-    public ModelAndView addShopForm(){
+    public ModelAndView addShopForm() {
         ModelAndView mav = new ModelAndView("add-shop-form");
         Shop shop = new Shop();
         mav.addObject("shop", shop);
@@ -35,22 +34,26 @@ public class ShopController {
     }
 
     @PostMapping("/saveShop")
-    public String saveShop(@ModelAttribute Shop shop){
+    public String saveShop(@ModelAttribute Shop shop) {
         shopRepository.save(shop);
+
         return "redirect:/shops";
     }
 
     @GetMapping("/showUpdateShopForm")
-    public ModelAndView showUpdateShopForm(@RequestParam Long shopId){
+    public ModelAndView showUpdateShopForm(@RequestParam Long shopId) {
         ModelAndView mav = new ModelAndView("add-shop-form");
         Optional<Shop> optionalShop = shopRepository.findById(shopId);
-        Shop shop = optionalShop.orElseGet(Shop::new);
+        Shop shop = new Shop();
+        if (optionalShop.isPresent()) {
+            shop = optionalShop.get();
+        }
         mav.addObject("shop", shop);
         return mav;
     }
 
     @GetMapping("/deleteShop")
-    public String deleteShop(@RequestParam Long shopId){
+    public String deleteShop(@RequestParam Long shopId) {
         shopRepository.deleteById(shopId);
         return "redirect:/shops";
     }

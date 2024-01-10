@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Shop Management System</title>
+    <title>Exclusive books in EKB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -11,17 +11,11 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <!-- Brand -->
         <a class="navbar-brand" th:href="@{/list}">Book Manager</a>
-
-        <!-- Toggler/collapsible Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedUserContent"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedUserContent"
                 aria-controls="navbarSupportedUserContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarSupportedUserContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -42,28 +36,29 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">Exit</a>
                 </li>
-                <!-- Здесь можете добавить дополнительные пункты меню если нужно -->
             </ul>
         </div>
     </div>
 </nav>
+<div class="container">
 
-
-<hr/>
-<h3>Add New Shop</h3>
-<hr/>
-<form th:action="@{/saveShop}" th:object="${shop}" method="POST">
-
-    <input type="text" th:field="*{name}" class="form-control col-4 mb-4" placeholder="Enter Shop Name" required/>
-
-    <input type="text" th:field="*{address}" class="form-control col-4 mb-4" placeholder="Enter Address" required/>
-
-    <button type="submit" class="btn btn-primary col-2">Save</button>
-
-</form>
-<hr/>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kqtX2ZjxVdZMhENbXXbE5Nu44ONs5kp1qtOv/5hSev9pUPn0hUxVj2I65bfVsh03"
-        crossorigin="anonymous"></script>
+    <h2>Журнал действий пользователей</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th style="color: #000000;">Имя пользователя</th>
+            <th style="color: #000000;">Действие</th>
+            <th style="color: #000000;">Временная метка</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log : ${logs}">
+            <td th:text="${log.username}" class="text-dark"></td>
+            <td th:text="${log.action}" class="text-dark"></td>
+            <td th:text="${#temporals.format(log.time, 'yyyy-MM-dd HH:mm:ss')}" class="text-dark"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

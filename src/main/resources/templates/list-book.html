@@ -1,89 +1,97 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Books Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Books Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Brand -->
-    <a class="navbar-brand" th:href="@{/}">Book Manager</a>
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" th:href="@{/list}">Book Manager</a>
 
-    <!-- Toggler/collapsible Button -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedUserContent"
-            aria-controls="navbarSupportedUserContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Toggler/collapsible Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedUserContent"
+                aria-controls="navbarSupportedUserContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Navbar links -->
-    <div class="collapse navbar-collapse" id="navbarSupportedUserContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/users}">User List</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/logout}">Logout</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/about}">О программе</a>
-        </li>
-        <!-- Здесь можете добавить дополнительные пункты меню если нужно -->
-      </ul>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedUserContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/list}">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shops}">Shops</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Exit</a>
+                </li>
+                <!-- Здесь можете добавить дополнительные пункты меню если нужно -->
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Navbar Content (Skipped for brevity) -->
-</nav>
+
 <div class="container">
-  <hr/>
-  <!-- Предполагаем, что ссылка на форму добавления книги -->
-  <a th:href="@{/addBookForm}" class="btn btn-primary">Add Book</a>
-  <br/><br/>
-  <!-- Обновляем ID таблицы и классы для поддержки стиля Bootstrap -->
-  <table class="table table-bordered table-striped" id="bookTable">
-    <thead>
-    <tr>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Цикл Thymeleaf для каждой книги -->
-    <tr th:each="book : ${books}">
-      <td th:text="${book.title}"></td>
-      <td th:text="${book.author}"></td>
-      <td th:text="${book.price}"></td>
-      <td>
-        <!-- Предполагаем, что есть методы для обновления и удаления книг -->
-        <a th:href="@{/showUpdateForm(bookId=${book.id})}" class="btn btn-info">Update</a>
-        <a th:href="@{/deleteBook(bookId=${book.id})}" class="btn btn-danger ml-2">Delete</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <hr/>
+    <!-- Предполагаем, что ссылка на форму добавления книги -->
+    <a th:href="@{/addBookForm}" class="btn btn-primary">Add Book</a>
+    <br/><br/>
+    <!-- Обновляем ID таблицы и классы для поддержки стиля Bootstrap -->
+    <table class="table table-bordered table-striped" id="bookTable">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Shop</th> <!-- Добавляем колонку "Магазин" -->
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Цикл Thymeleaf для каждой книги -->
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.price}"></td>
+            <td>
+                <!-- Thymeleaf код для вывода магазина (предполагается, что у книги есть поле shop) -->
+                <span th:each="bookShop: ${book.bookShops}">
+                <span th:text="${bookShop.shop.name}"/>
+            </td>
+            <td>
+                <!-- Предполагаем, что есть методы для обновления и удаления книг -->
+                <a th:href="@{/showUpdateForm(bookId=${book.id})}" class="btn btn-info">Update</a>
+                <a th:href="@{/deleteBook(bookId=${book.id})}" class="btn btn-danger ml-2">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
 <script>
-  $(document).ready(function () {
-    $("#bookTable").DataTable({
-      'aoColumnDefs': [{
-        'bSortable': false,
-        'aTargets': [-1] // Disable sorting on the last column (actions)
-      }]
-    });
-  })
+    $(document).ready(function () {
+        $("#bookTable").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1] // Disable sorting on the last column (actions)
+            }]
+        });
+    })
 </script>
 </body>
 </html>

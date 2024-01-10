@@ -16,9 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetailsService(UserRepository userRepository){this.userRepository = userRepository;}
     @Override
     public UserDetails loadUserByUsername(String usernameOeEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(usernameOeEmail);
+        User user = userRepository.findByUsername(usernameOeEmail);
         if(user != null){
-            return new org.springframework.security.core.userdetails.User(user.getEmail()
+            return new org.springframework.security.core.userdetails.User(user.getUsername()
                     , user.getPassword(),
                     user.getRoles().stream()
                             .map((role)-> new SimpleGrantedAuthority(role.getName()))
